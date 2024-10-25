@@ -23,14 +23,14 @@ const App = () => {
       case 'tenant':
         return '/dashboard-tenant';
       default:
-        return '/';
+        return '/login';
     }
   };
 
   return (
     <Routes>
       <Route
-        path="/"
+        path="/login"
         element={
           token ? (
             <Navigate to={getDashboardPath(roleName)} />
@@ -96,7 +96,7 @@ const App = () => {
           </ProtectedRoute>
         }
       />
-      <Route path="*" element={<Navigate to="/" />} />
+      <Route path="*" element={<Navigate to="/login" />} />
     </Routes>
   );
 };

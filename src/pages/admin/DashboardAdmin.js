@@ -1,19 +1,11 @@
 import { useNavigate } from 'react-router-dom';
+import Header from '../../components/Header';
+import {
+  Box,
+} from '@mui/material';
 
 const DashboardAdmin = () => {
   const navigate = useNavigate();
-
-  // Hàm xử lý đăng xuất
-  const handleLogout = () => {
-    // Xóa dữ liệu trong localStorage
-    localStorage.removeItem('token');
-    localStorage.removeItem('user_info');
-    localStorage.removeItem('role_id');
-    localStorage.removeItem('role_name');
-
-    // Điều hướng về trang đăng nhập
-    navigate('/');
-  };
 
   // Hàm điều hướng nhanh đến các trang quản lý
   const navigateTo = (path) => {
@@ -21,52 +13,42 @@ const DashboardAdmin = () => {
   };
 
   return (
-    <div style={{ padding: '20px' }}>
-      <h1>Admin Dashboard</h1>
-      <p>Chào mừng bạn đến với trang quản trị. Dưới đây là các mục quản lý chính.</p>
+    <Box>
+       <Header />
 
-      <div style={menuStyle}>
-        <button
-          onClick={() => navigateTo('/user-management')}
-          style={buttonStyle}
-        >
-          Quản lý Tài khoản
-        </button>
-        <button
-          onClick={() => navigateTo('/room-management')}
-          style={buttonStyle}
-        >
-          Quản lý Phòng
-        </button>
-        <button
-          onClick={() => navigateTo('/invoice-management')}
-          style={buttonStyle}
-        >
-          Quản lý Hóa đơn
-        </button>
-        <button
-          onClick={() => navigateTo('/contract-management')}
-          style={buttonStyle}
-        >
-          Quản lý Hợp đồng
-        </button>
+      <div style={{ padding: '20px', marginTop: '30px' }}>
+        <h1>Admin Dashboard</h1>
+        <p>Chào mừng bạn đến với trang quản trị. Dưới đây là các mục quản lý chính.</p>
+
+        <div style={menuStyle}>
+          <button
+            onClick={() => navigateTo('/user-management')}
+            style={buttonStyle}
+          >
+            Quản lý Tài khoản
+          </button>
+          <button
+            onClick={() => navigateTo('/room-management')}
+            style={buttonStyle}
+          >
+            Quản lý Phòng
+          </button>
+          <button
+            onClick={() => navigateTo('/invoice-management')}
+            style={buttonStyle}
+          >
+            Quản lý Hóa đơn
+          </button>
+          <button
+            onClick={() => navigateTo('/contract-management')}
+            style={buttonStyle}
+          >
+            Quản lý Hợp đồng
+          </button>
+        </div>
       </div>
+    </Box>
 
-      <button
-        onClick={handleLogout}
-        style={{
-          marginTop: '20px',
-          padding: '10px 20px',
-          backgroundColor: '#ff4d4f',
-          color: 'white',
-          border: 'none',
-          borderRadius: '5px',
-          cursor: 'pointer',
-        }}
-      >
-        Đăng Xuất
-      </button>
-    </div>
   );
 };
 

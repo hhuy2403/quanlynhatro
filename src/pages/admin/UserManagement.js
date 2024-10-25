@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Header from '../../components/Header';
 import axios from 'axios';
 import {
   Box,
@@ -15,7 +16,6 @@ import {
   TableHead,
   TableRow,
   Paper,
-  Modal,
   IconButton,
   Grid,
 } from '@mui/material';
@@ -54,6 +54,7 @@ const UserManagement = () => {
     fetchRoles();
   }, []);
 
+
   // Lấy danh sách người dùng
   const fetchUsers = async () => {
     try {
@@ -80,7 +81,7 @@ const UserManagement = () => {
           },
         }
       );
-  
+
       if (response.status === 200) {
         alert('Đặt lại mật khẩu thành công!');
       } else {
@@ -100,9 +101,9 @@ const UserManagement = () => {
           page_size: 10,
           page: 1,
           sort_by: 'id',
-          order: 'desc'
+          order: 'desc',
         },
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}` },
       });
       setRoles(response.data.data);
     } catch (error) {
@@ -275,144 +276,243 @@ const UserManagement = () => {
   };
 
   return (
-    <Box sx={{ padding: '20px' }}>
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={handleBack}
-        sx={{ mb: 2 }}
-      >
-        Quay Về
-      </Button>
+    <Box>
+      <Header />
 
-      <Typography variant="h4" gutterBottom>
-        Quản Lý Tài Khoản
-      </Typography>
+      <Box sx={{ padding: '20px', marginTop: '50px' }}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleBack}
+          sx={{ mb: 2 }}
+        >
+          Quay Về
+        </Button>
 
-      {showUserInfo && selectedUser ? (
-        <Paper elevation={3} sx={{ padding: 3, marginBottom: 4 }}>
-          <Typography variant="h5" gutterBottom>
-            Thông Tin Người Dùng
-          </Typography>
-          <Grid container spacing={2}>
-            {[
-              { label: 'Họ và Tên', value: selectedUser.full_name },
-              { label: 'Biệt Danh', value: selectedUser.nick_name },
-              { label: 'Email', value: selectedUser.email_address },
-              { label: 'Số Điện Thoại', value: selectedUser.phone_number },
-              { label: 'Ngày Sinh', value: selectedUser.date_of_birth },
-              { label: 'Giới Tính', value: selectedUser.gender === 0 ? 'Nam' : 'Nữ' },
-              { label: 'Địa Chỉ', value: selectedUser.address },
-              { label: 'Vai Trò', value: selectedUser.role ? selectedUser.role.name : 'Không có vai trò' },
-            ].map(({ label, value }, index) => (
-              <Grid item xs={12} md={6} key={index}>
-                <Typography><b>{label}:</b> {value}</Typography>
-              </Grid>
-            ))}
-          </Grid>
-          <Button
-            variant="contained"
-            color="secondary"
-            sx={{ mt: 2 }}
-            onClick={handleCloseUserInfo}
-          >
-            Đóng
-          </Button>
-        </Paper>
-      ) : (
-        <Paper elevation={3} sx={{ padding: 3, marginBottom: 4 }}>
-          <Typography variant="h5" gutterBottom>
-            {selectedUser ? 'Cập Nhật Tài Khoản' : 'Tạo Tài Khoản Mới'}
-          </Typography>
-          <Grid container spacing={2}>
-            {[
-              { name: 'full_name', label: 'Họ và Tên' },
-              { name: 'nick_name', label: 'Biệt Danh' },
-              { name: 'email_address', label: 'Email' },
-              { name: 'user_name', label: 'Tên Người Dùng' },
-              { name: 'phone_number', label: 'Số Điện Thoại' },
-              { name: 'address', label: 'Địa Chỉ' },
-              { name: 'avt_url', label: 'URL Ảnh Đại Diện' },
-            ].map(({ name, label }, index) => (
-              <Grid item xs={12} md={6} key={index}>
+        <Typography variant="h4" gutterBottom>
+          Quản Lý Tài Khoản
+        </Typography>
+
+        {showUserInfo && selectedUser ? (
+          <Paper elevation={3} sx={{ padding: 3, marginBottom: 4 }}>
+            <Typography variant="h5" gutterBottom>
+              Thông Tin Người Dùng
+            </Typography>
+            <Grid container spacing={2}>
+              {[
+                { label: 'Họ và Tên', value: selectedUser.full_name },
+                { label: 'Biệt Danh', value: selectedUser.nick_name },
+                { label: 'Email', value: selectedUser.email_address },
+                { label: 'Số Điện Thoại', value: selectedUser.phone_number },
+                { label: 'Ngày Sinh', value: selectedUser.date_of_birth },
+                { label: 'Giới Tính', value: selectedUser.gender === 0 ? 'Nam' : 'Nữ' },
+                { label: 'Địa Chỉ', value: selectedUser.address },
+                { label: 'Vai Trò', value: selectedUser.role ? selectedUser.role.name : 'Không có vai trò' },
+              ].map(({ label, value }, index) => (
+                <Grid item xs={12} md={6} key={index}>
+                  <Typography><b>{label}:</b> {value}</Typography>
+                </Grid>
+              ))}
+            </Grid>
+            <Button
+              variant="contained"
+              color="secondary"
+              sx={{ mt: 2 }}
+              onClick={handleCloseUserInfo}
+            >
+              Đóng
+            </Button>
+          </Paper>
+        ) : (
+          <Paper elevation={3} sx={{ padding: 3, marginBottom: 4 }}>
+            <Typography variant="h5" gutterBottom>
+              {selectedUser ? 'Cập Nhật Tài Khoản' : 'Tạo Tài Khoản Mới'}
+            </Typography>
+            <Grid container spacing={2}>
+              {[
+                { name: 'full_name', label: 'Họ và Tên' },
+                { name: 'nick_name', label: 'Biệt Danh' },
+                { name: 'email_address', label: 'Email' },
+                { name: 'user_name', label: 'Tên Người Dùng' },
+                { name: 'phone_number', label: 'Số Điện Thoại' },
+                { name: 'address', label: 'Địa Chỉ' },
+                { name: 'avt_url', label: 'URL Ảnh Đại Diện' },
+              ].map(({ name, label }, index) => (
+                <Grid item xs={12} md={6} key={index}>
+                  <TextField
+                    fullWidth
+                    variant="outlined"
+                    label={label}
+                    name={name}
+                    value={newUser[name]}
+                    onChange={handleInputChange}
+                  />
+                </Grid>
+              ))}
+
+              {!selectedUser && (
+                <Grid item xs={12}>
+                  <TextField
+                    fullWidth
+                    type="password"
+                    variant="outlined"
+                    label="Mật Khẩu"
+                    name="hashed_password"
+                    value={newUser.hashed_password}
+                    onChange={handleInputChange}
+                  />
+                </Grid>
+              )}
+
+              <Grid item xs={12} md={6}>
                 <TextField
                   fullWidth
+                  type="date"
                   variant="outlined"
-                  label={label}
-                  name={name}
-                  value={newUser[name]}
+                  name="date_of_birth"
+                  value={newUser.date_of_birth}
                   onChange={handleInputChange}
+                  InputLabelProps={{ shrink: true }}
+                  label="Ngày Sinh"
                 />
               </Grid>
-            ))}
 
-            {!selectedUser && (
+              <Grid item xs={12} md={6}>
+                <Select
+                  fullWidth
+                  variant="outlined"
+                  name="gender"
+                  value={newUser.gender}
+                  onChange={handleInputChange}
+                >
+                  <MenuItem value={0}>Nam</MenuItem>
+                  <MenuItem value={1}>Nữ</MenuItem>
+                </Select>
+              </Grid>
+
               <Grid item xs={12}>
-                <TextField
+                <Select
                   fullWidth
-                  type="password"
                   variant="outlined"
-                  label="Mật Khẩu"
-                  name="hashed_password"
-                  value={newUser.hashed_password}
+                  name="role_id"
+                  value={newUser.role_id}
                   onChange={handleInputChange}
-                />
+                >
+                  <MenuItem value="">Chọn Vai Trò</MenuItem>
+                  {roles.map((role) => (
+                    <MenuItem key={role.id} value={role.id}>
+                      {role.name}
+                    </MenuItem>
+                  ))}
+                </Select>
               </Grid>
-            )}
 
+              <Grid item xs={12} sx={{ display: 'flex', gap: 2, mt: 2 }}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  fullWidth
+                  onClick={handleSaveUser}
+                >
+                  {selectedUser ? 'Cập Nhật' : 'Tạo Mới'}
+                </Button>
+                {selectedUser && (
+                  <Button
+                    variant="outlined"
+                    color="secondary"
+                    fullWidth
+                    onClick={resetForm}
+                  >
+                    Hủy
+                  </Button>
+                )}
+              </Grid>
+            </Grid>
+          </Paper>
+        )}
+
+        <Typography variant="h5" sx={{ mt: 4 }}>
+          Danh Sách Tài Khoản
+        </Typography>
+        <TableContainer component={Paper} sx={{ mt: 2 }}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>CD Code</TableCell>
+                <TableCell>Họ và Tên</TableCell>
+                <TableCell>Email</TableCell>
+                <TableCell>Vai Trò</TableCell>
+                <TableCell>Hành Động</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {users.map((user) => (
+                <TableRow key={user.cd_code}>
+                  <TableCell>{user.cd_code}</TableCell>
+                  <TableCell>{user.full_name}</TableCell>
+                  <TableCell>{user.email_address}</TableCell>
+                  <TableCell>{user.role ? user.role.name : 'Không có vai trò'}</TableCell>
+                  <TableCell>
+                    <IconButton onClick={() => handleResetPassword(user.cd_code)}>
+                      <RestartAltIcon color="primary" />
+                    </IconButton>
+                    <IconButton onClick={() => handleViewUserInfo(user)}>
+                      <VisibilityIcon />
+                    </IconButton>
+                    <IconButton onClick={() => handleEditUser(user)}>
+                      <EditIcon />
+                    </IconButton>
+                    <IconButton
+                      onClick={() => handleDeleteUser(user.cd_code)}
+                      color="error"
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+
+        <Typography variant="h5" sx={{ mt: 4 }}>
+          Quản Lý Vai Trò
+        </Typography>
+        <Paper elevation={3} sx={{ padding: 3, mt: 2 }}>
+          <Typography variant="h6" gutterBottom>
+            {selectedRole ? 'Cập Nhật Vai Trò' : 'Thêm Vai Trò'}
+          </Typography>
+          <Grid container spacing={2}>
             <Grid item xs={12} md={6}>
               <TextField
                 fullWidth
-                type="date"
                 variant="outlined"
-                name="date_of_birth"
-                value={newUser.date_of_birth}
+                label="Tên Vai Trò"
+                name="name"
+                value={newRole.name}
                 onChange={handleInputChange}
-                InputLabelProps={{ shrink: true }}
-                label="Ngày Sinh"
               />
             </Grid>
-
             <Grid item xs={12} md={6}>
-              <Select
+              <TextField
                 fullWidth
                 variant="outlined"
-                name="gender"
-                value={newUser.gender}
+                label="Mô Tả"
+                name="description"
+                value={newRole.description}
                 onChange={handleInputChange}
-              >
-                <MenuItem value={0}>Nam</MenuItem>
-                <MenuItem value={1}>Nữ</MenuItem>
-              </Select>
+              />
             </Grid>
-
-            <Grid item xs={12}>
-              <Select
-                fullWidth
-                variant="outlined"
-                name="role_id"
-                value={newUser.role_id}
-                onChange={handleInputChange}
-              >
-                <MenuItem value="">Chọn Vai Trò</MenuItem>
-                {roles.map((role) => (
-                  <MenuItem key={role.id} value={role.id}>
-                    {role.name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </Grid>
-
             <Grid item xs={12} sx={{ display: 'flex', gap: 2, mt: 2 }}>
               <Button
                 variant="contained"
                 color="primary"
                 fullWidth
-                onClick={handleSaveUser}
+                onClick={handleSaveRole}
               >
-                {selectedUser ? 'Cập Nhật' : 'Tạo Mới'}
+                {selectedRole ? 'Cập Nhật' : 'Thêm Mới'}
               </Button>
-              {selectedUser && (
+              {selectedRole && (
                 <Button
                   variant="outlined"
                   color="secondary"
@@ -425,170 +525,74 @@ const UserManagement = () => {
             </Grid>
           </Grid>
         </Paper>
-      )}
 
-      <Typography variant="h5" sx={{ mt: 4 }}>
-        Danh Sách Tài Khoản
-      </Typography>
-      <TableContainer component={Paper} sx={{ mt: 2 }}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>CD Code</TableCell>
-              <TableCell>Họ và Tên</TableCell>
-              <TableCell>Email</TableCell>
-              <TableCell>Vai Trò</TableCell>
-              <TableCell>Hành Động</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {users.map((user) => (
-              <TableRow key={user.cd_code}>
-                <TableCell>{user.cd_code}</TableCell>
-                <TableCell>{user.full_name}</TableCell>
-                <TableCell>{user.email_address}</TableCell>
-                <TableCell>{user.role ? user.role.name : 'Không có vai trò'}</TableCell>
-                <TableCell>
-                  <IconButton onClick={() => handleResetPassword(user.cd_code)}>
-                    <RestartAltIcon color="primary" />
-                  </IconButton>
-                  <IconButton onClick={() => handleViewUserInfo(user)}>
-                    <VisibilityIcon />
-                  </IconButton>
-                  <IconButton onClick={() => handleEditUser(user)}>
-                    <EditIcon />
-                  </IconButton>
-                  <IconButton
-                    onClick={() => handleDeleteUser(user.cd_code)}
-                    color="error"
-                  >
-                    <DeleteIcon />
-                  </IconButton>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-
-      <Typography variant="h5" sx={{ mt: 4 }}>
-        Quản Lý Vai Trò
-      </Typography>
-      <Paper elevation={3} sx={{ padding: 3, mt: 2 }}>
-        <Typography variant="h6" gutterBottom>
-          {selectedRole ? 'Cập Nhật Vai Trò' : 'Thêm Vai Trò'}
+        <Typography variant="h5" sx={{ mt: 4 }}>
+          Danh Sách Vai Trò
         </Typography>
-        <Grid container spacing={2}>
-          <Grid item xs={12} md={6}>
-            <TextField
-              fullWidth
-              variant="outlined"
-              label="Tên Vai Trò"
-              name="name"
-              value={newRole.name}
-              onChange={handleInputChange}
-            />
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <TextField
-              fullWidth
-              variant="outlined"
-              label="Mô Tả"
-              name="description"
-              value={newRole.description}
-              onChange={handleInputChange}
-            />
-          </Grid>
-          <Grid item xs={12} sx={{ display: 'flex', gap: 2, mt: 2 }}>
-            <Button
-              variant="contained"
-              color="primary"
-              fullWidth
-              onClick={handleSaveRole}
-            >
-              {selectedRole ? 'Cập Nhật' : 'Thêm Mới'}
-            </Button>
-            {selectedRole && (
-              <Button
-                variant="outlined"
-                color="secondary"
-                fullWidth
-                onClick={resetForm}
-              >
-                Hủy
-              </Button>
-            )}
-          </Grid>
-        </Grid>
-      </Paper>
-
-      <Typography variant="h5" sx={{ mt: 4 }}>
-        Danh Sách Vai Trò
-      </Typography>
-      <TableContainer component={Paper} sx={{ mt: 2 }}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Mã Vai Trò (CD Code)</TableCell>
-              <TableCell>Tên Vai Trò</TableCell>
-              <TableCell>Mô Tả</TableCell>
-              <TableCell>Hành Động</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {roles.length > 0 ? (
-              roles.map((role) => (
-                <TableRow key={role.cd_code}>
-                  <TableCell>{role.cd_code}</TableCell>
-                  <TableCell>{role.name}</TableCell>
-                  <TableCell>{role.description || 'Không có mô tả'}</TableCell>
-                  <TableCell>
-                    <IconButton onClick={() => handleEditRole(role)}>
-                      <EditIcon />
-                    </IconButton>
-                    <IconButton
-                      onClick={() => handleDeleteRole(role.cd_code)}
-                      color="error"
-                    >
-                      <DeleteIcon />
-                    </IconButton>
+        <TableContainer component={Paper} sx={{ mt: 2 }}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>Mã Vai Trò (CD Code)</TableCell>
+                <TableCell>Tên Vai Trò</TableCell>
+                <TableCell>Mô Tả</TableCell>
+                <TableCell>Hành Động</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {roles.length > 0 ? (
+                roles.map((role) => (
+                  <TableRow key={role.cd_code}>
+                    <TableCell>{role.cd_code}</TableCell>
+                    <TableCell>{role.name}</TableCell>
+                    <TableCell>{role.description || 'Không có mô tả'}</TableCell>
+                    <TableCell>
+                      <IconButton onClick={() => handleEditRole(role)}>
+                        <EditIcon />
+                      </IconButton>
+                      <IconButton
+                        onClick={() => handleDeleteRole(role.cd_code)}
+                        color="error"
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={4} align="center">
+                    Không có vai trò nào.
                   </TableCell>
                 </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell colSpan={4} align="center">
-                  Không có vai trò nào.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </TableContainer>
+              )}
+            </TableBody>
+          </Table>
+        </TableContainer>
 
-
-      {error && (
-        <Typography color="error" sx={{ mt: 2 }}>
-          {error}
-        </Typography>
-      )}
+        {error && (
+          <Typography color="error" sx={{ mt: 2 }}>
+            {error}
+          </Typography>
+        )}
+      </Box>
     </Box>
   );
 
 };
-const headerStyle = {
-  border: '1px solid #ddd',
-  padding: '8px',
-  backgroundColor: '#f2f2f2',
-  textAlign: 'left',
-};
+// const headerStyle = {
+//   border: '1px solid #ddd',
+//   padding: '8px',
+//   backgroundColor: '#f2f2f2',
+//   textAlign: 'left',
+// };
 
-const cellStyle = {
-  border: '1px solid #ddd',
-  padding: '8px',
-  textAlign: 'left',
-};
-const inputStyle = { margin: '5px 0', padding: '10px', width: '100%' };
-const buttonStyle = { padding: '10px', marginTop: '10px', cursor: 'pointer' };
+// const cellStyle = {
+//   border: '1px solid #ddd',
+//   padding: '8px',
+//   textAlign: 'left',
+// };
+// const inputStyle = { margin: '5px 0', padding: '10px', width: '100%' };
+// const buttonStyle = { padding: '10px', marginTop: '10px', cursor: 'pointer' };
 
 export default UserManagement;
